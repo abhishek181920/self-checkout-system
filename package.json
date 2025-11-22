@@ -1,0 +1,13 @@
+{
+  "name": "scanezy-self-checkout",
+  "version": "1.0.0",
+  "description": "Smart Self-Checkout System for Retail Stores",
+  "scripts": {
+    "start": "serve -s .",
+    "build": "echo 'No build step required'",
+    "deploy": "echo 'Ready for Vercel deployment'"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}
