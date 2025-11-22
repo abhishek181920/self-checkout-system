@@ -634,6 +634,7 @@
         };
 
         function UserDashboard({ user }) {
+            console.log('UserDashboard rendered with user:', user);
             const [currentTab, setCurrentTab] = useState('dashboard');
             const [isAuthenticated, setIsAuthenticated] = useState(true);
             const [cameraGranted, setCameraGranted] = useState(() => localStorage.getItem('cameraPermission') === 'granted');
@@ -1137,6 +1138,8 @@
             });
 
             const [user, setUser] = useState(null);
+            
+            console.log('App rendered - isOnboarded:', isOnboarded, 'user:', user);
 
             const handleOnboardingComplete = (profile) => {
                 console.log('App onboarding complete with profile:', profile);
