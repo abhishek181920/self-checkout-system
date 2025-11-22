@@ -445,6 +445,13 @@
         const API_BASE = window.location.hostname === 'localhost'
             ? 'http://localhost:8001'
             : window.location.origin;
+        
+        // Check if axios is loaded
+        if (typeof axios === 'undefined') {
+            console.error('Axios library not loaded');
+        } else {
+            console.log('Axios library loaded successfully');
+        }
 
         const Onboarding = ({ onComplete }) => {
             const [role, setRole] = useState(null);
@@ -488,8 +495,20 @@
                 } catch (error) {
                     console.log('Error sending OTP:', error);
                     console.log('Error response:', error?.response);
-                    const detail = error?.response?.data?.message || error?.response?.data?.detail || 'Failed to send OTP. Please try again.';
-                    setStatus({ type: 'error', message: detail });
+                    console.log('Error message:', error?.message);
+                    console.log('Error code:', error?.code);
+                    
+                    // Handle different types of errors
+                    if (error?.code === 'ERR_NETWORK') {
+                        setStatus({ type: 'error', message: 'Network error. Please check your connection.' });
+                    } else if (error?.response?.status === 404) {
+                        setStatus({ type: 'error', message: 'API endpoint not found. Please check the server.' });
+                    } else if (error?.response?.status === 500) {
+                        setStatus({ type: 'error', message: 'Server error. Please try again later.' });
+                    } else {
+                        const detail = error?.response?.data?.message || error?.response?.data?.detail || error?.message || 'Failed to send OTP. Please try again.';
+                        setStatus({ type: 'error', message: detail });
+                    }
                 } finally {
                     console.log('Setting loading to false');
                     setLoading(false);
@@ -525,8 +544,20 @@
                 } catch (error) {
                     console.log('Error verifying OTP:', error);
                     console.log('Error response:', error?.response);
-                    const detail = error?.response?.data?.message || error?.response?.data?.detail || 'OTP verification failed';
-                    setStatus({ type: 'error', message: detail });
+                    console.log('Error message:', error?.message);
+                    console.log('Error code:', error?.code);
+                    
+                    // Handle different types of errors
+                    if (error?.code === 'ERR_NETWORK') {
+                        setStatus({ type: 'error', message: 'Network error. Please check your connection.' });
+                    } else if (error?.response?.status === 404) {
+                        setStatus({ type: 'error', message: 'API endpoint not found. Please check the server.' });
+                    } else if (error?.response?.status === 500) {
+                        setStatus({ type: 'error', message: 'Server error. Please try again later.' });
+                    } else {
+                        const detail = error?.response?.data?.message || error?.response?.data?.detail || error?.message || 'OTP verification failed';
+                        setStatus({ type: 'error', message: detail });
+                    }
                 } finally {
                     setLoading(false);
                 }
