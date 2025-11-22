@@ -451,6 +451,10 @@
             console.error('Axios library not loaded');
         } else {
             console.log('Axios library loaded successfully');
+            // Test API connectivity
+            axios.get(`${API_BASE}/health`)
+                .then(response => console.log('API health check successful:', response.data))
+                .catch(error => console.error('API health check failed:', error));
         }
 
         const Onboarding = ({ onComplete }) => {
@@ -487,6 +491,7 @@
                 setStatus(null);
                 try {
                     console.log('Making API call to:', `${API_BASE}/auth/otp`);
+                    console.log('Request data:', { phone: form.phone });
                     const response = await axios.post(`${API_BASE}/auth/otp`, { phone: form.phone });
                     console.log('OTP API response:', response);
                     console.log('OTP sent successfully, setting otpSent to true');
@@ -526,6 +531,7 @@
                 setStatus(null);
                 try {
                     console.log('Making verify API call to:', `${API_BASE}/auth/verify`);
+                    console.log('Request data:', { phone: form.phone, otp: otp });
                     const response = await axios.post(`${API_BASE}/auth/verify`, {
                         phone: form.phone,
                         otp: otp
