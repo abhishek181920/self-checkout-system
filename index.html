@@ -669,6 +669,7 @@
             ]);
 
             const handleOnboardingComplete = (profile) => {
+                console.log('Onboarding complete with profile:', profile);
                 setUser({
                     name: profile.name,
                     phone: profile.phone,
@@ -679,6 +680,7 @@
                     shopName: profile.shopName || ''
                 });
                 setIsAuthenticated(true);
+                console.log('User authenticated, cameraGranted:', cameraGranted);
                 if (!cameraGranted) {
                     setCameraPromptVisible(true);
                 }
