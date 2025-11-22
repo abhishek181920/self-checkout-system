@@ -475,21 +475,26 @@
                     return;
                 }
 
+                console.log('Sending OTP for phone:', form.phone);
                 setLoading(true);
                 setStatus(null);
                 try {
                     await axios.post(`${API_BASE}/auth/otp`, { phone: form.phone });
+                    console.log('OTP sent successfully, setting otpSent to true');
                     setOtpSent(true);
                     setStatus({ type: 'success', message: 'OTP sent successfully' });
                 } catch (error) {
+                    console.log('Error sending OTP:', error);
                     const detail = error?.response?.data?.detail || 'Failed to send OTP. Please try again.';
                     setStatus({ type: 'error', message: detail });
                 } finally {
+                    console.log('Setting loading to false');
                     setLoading(false);
                 }
             };
 
             const handleVerifyOtp = async () => {
+                console.log('Verifying OTP:', otp, 'for phone:', form.phone);
                 if (!otp) {
                     setStatus({ type: 'error', message: 'Enter the OTP you received' });
                     return;
@@ -502,6 +507,7 @@
                         phone: form.phone,
                         otp: otp
                     });
+                    console.log('OTP verified successfully:', response.data);
 
                     setStatus({ type: 'success', message: 'OTP verified. Redirecting...' });
                     onComplete({
@@ -512,6 +518,7 @@
                         tokens: response.data
                     });
                 } catch (error) {
+                    console.log('Error verifying OTP:', error);
                     const detail = error?.response?.data?.detail || 'OTP verification failed';
                     setStatus({ type: 'error', message: detail });
                 } finally {
@@ -605,7 +612,7 @@
                                     onClick={handleVerifyOtp}
                                     disabled={loading || !otpSent}
                                 >
-                                    {loading ? 'Verifying...' : 'Verify & Continue'}
+                                    {loading ? 'Verifying...' : `Verify & Continue (loading: ${loading}, otpSent: ${otpSent})`}
                                 </button>
 
                                 {status && (
