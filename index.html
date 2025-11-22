@@ -455,6 +455,11 @@
             axios.get(`${API_BASE}/health`)
                 .then(response => console.log('API health check successful:', response.data))
                 .catch(error => console.error('API health check failed:', error));
+            
+            // Test direct OTP call
+            axios.post(`${API_BASE}/auth/otp`, { phone: '+1234567890' })
+                .then(response => console.log('Direct OTP call successful:', response.data))
+                .catch(error => console.error('Direct OTP call failed:', error));
         }
 
         const Onboarding = ({ onComplete }) => {
