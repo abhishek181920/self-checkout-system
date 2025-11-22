@@ -479,13 +479,16 @@
                 setLoading(true);
                 setStatus(null);
                 try {
-                    await axios.post(`${API_BASE}/auth/otp`, { phone: form.phone });
+                    console.log('Making API call to:', `${API_BASE}/auth/otp`);
+                    const response = await axios.post(`${API_BASE}/auth/otp`, { phone: form.phone });
+                    console.log('OTP API response:', response);
                     console.log('OTP sent successfully, setting otpSent to true');
                     setOtpSent(true);
                     setStatus({ type: 'success', message: 'OTP sent successfully' });
                 } catch (error) {
                     console.log('Error sending OTP:', error);
-                    const detail = error?.response?.data?.detail || 'Failed to send OTP. Please try again.';
+                    console.log('Error response:', error?.response);
+                    const detail = error?.response?.data?.message || error?.response?.data?.detail || 'Failed to send OTP. Please try again.';
                     setStatus({ type: 'error', message: detail });
                 } finally {
                     console.log('Setting loading to false');
@@ -503,10 +506,12 @@
                 setLoading(true);
                 setStatus(null);
                 try {
+                    console.log('Making verify API call to:', `${API_BASE}/auth/verify`);
                     const response = await axios.post(`${API_BASE}/auth/verify`, {
                         phone: form.phone,
                         otp: otp
                     });
+                    console.log('Verify API response:', response);
                     console.log('OTP verified successfully:', response.data);
 
                     setStatus({ type: 'success', message: 'OTP verified. Redirecting...' });
@@ -519,7 +524,8 @@
                     });
                 } catch (error) {
                     console.log('Error verifying OTP:', error);
-                    const detail = error?.response?.data?.detail || 'OTP verification failed';
+                    console.log('Error response:', error?.response);
+                    const detail = error?.response?.data?.message || error?.response?.data?.detail || 'OTP verification failed';
                     setStatus({ type: 'error', message: detail });
                 } finally {
                     setLoading(false);
