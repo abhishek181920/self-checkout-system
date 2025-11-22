@@ -443,7 +443,7 @@
         const { useState, useEffect } = React;
 
         const API_BASE = window.location.hostname === 'localhost'
-            ? 'https://rotten-parks-lay.loca.lt'
+            ? 'http://localhost:8001'
             : window.location.origin;
 
         const Onboarding = ({ onComplete }) => {
@@ -478,12 +478,7 @@
                 setLoading(true);
                 setStatus(null);
                 try {
-                    await axios.post(`${API_BASE}/auth/otp`, { phone: form.phone }, {
-                        auth: {
-                            username: 'admin',
-                            password: 'securepassword'
-                        }
-                    });
+                    await axios.post(`${API_BASE}/auth/otp`, { phone: form.phone });
                     setOtpSent(true);
                     setStatus({ type: 'success', message: 'OTP sent successfully' });
                 } catch (error) {
@@ -506,11 +501,6 @@
                     const response = await axios.post(`${API_BASE}/auth/verify`, {
                         phone: form.phone,
                         otp: otp
-                    }, {
-                        auth: {
-                            username: 'admin',
-                            password: 'securepassword'
-                        }
                     });
 
                     setStatus({ type: 'success', message: 'OTP verified. Redirecting...' });
